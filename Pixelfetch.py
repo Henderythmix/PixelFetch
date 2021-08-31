@@ -10,18 +10,20 @@ init()
 
 import ASCIICanvas
 
-# Canvas Creation
+# Static Variables
 FetchCanvas = ASCIICanvas.Canvas(32, 9)
 FetchCanvas.Initialize()
 
+ConfigFile = open(os.path.dirname(__file__) + "/config.json", "r")
+Config = json.loads(ConfigFile.read())
+
 # Picking the Icon
-ComputerDistro = distro.name()
+ComputerDistro = distro.id()
 OSColor = Fore.WHITE
 
-if ComputerDistro == "Debian GNU/Linux":
-    ComputerDistro = "Debian"
+if ComputerDistro == "debian":
     OSColor = Fore.RED
-elif ComputerDistro == "Linux Mint":
+elif ComputerDistro == "linuxmint":
     OSColor = Fore.GREEN
 else:
     ComputerDistro = "Unknown"

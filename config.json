@@ -1,4 +1,5 @@
  {
      "Icon": "auto",
-     "Distro": "auto"
+     "Distro": "auto",
+     "WindowEnvironment": false
  }
