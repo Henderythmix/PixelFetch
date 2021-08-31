@@ -1,5 +1,6 @@
  {
-     "Icon": "auto",
-     "Distro": "auto",
-     "UsesWindowManager": false
+    "Distro": "auto",
+    "Icon": "auto",
+    "Color": "auto",
+    "UsesWindowManager": false
  }
