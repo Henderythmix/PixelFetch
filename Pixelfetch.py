@@ -11,11 +11,19 @@ init()
 import ASCIICanvas
 
 # Static Variables
-FetchCanvas = ASCIICanvas.Canvas(32, 9)
+FetchCanvas = ASCIICanvas.Canvas(64, 9)
 FetchCanvas.Initialize()
 
 ConfigFile = open(os.path.dirname(__file__) + "/config.json", "r")
 Config = json.loads(ConfigFile.read())
+
+# Is it a window manager?
+EnvType = ""
+
+if Config["UsesWindowManager"] == True:
+    EnvType = " | WM: "
+else:
+    EnvType = " | DE: "
 
 # Picking the Icon
 ComputerDistro = distro.id()
@@ -30,13 +38,30 @@ else:
     OSColor = Fore.MAGENTA
 
 Icon = open(os.path.dirname(__file__) + "/Icons/" + ComputerDistro + ".txt", "r")
-IconText = OSColor + Icon.read()
+IconText = Icon.read()
 
-# Drawing to Canvas
-FetchCanvas.DrawString(IconText, 1, 0)
+# --Drawing to Canvas--
+
+# Icon
+FetchCanvas.DrawString(IconText, 1, 0, Fore.RED)
+
+# Chat Box
+FetchCanvas.ScreenData[0][18] = Fore.WHITE + "▗"
+FetchCanvas.ScreenData[7][18] = Fore.WHITE + "▝"
+for i in range(1, 7):
+    FetchCanvas.ScreenData[i][18] = Fore.WHITE + "▐"
+    FetchCanvas.ScreenData[i][63] = Fore.WHITE + "▌"
+FetchCanvas.ScreenData[0][63] = Fore.WHITE + "▖"
+FetchCanvas.ScreenData[7][63] = Fore.WHITE + "▘"
+
+for i in range(19, 63):
+    FetchCanvas.ScreenData[0][i] = Fore.WHITE + "▄"
+    FetchCanvas.ScreenData[7][i] = Fore.WHITE + "▀"
 
 # Presenting Information
+PCInfo = " | OS: " + distro.name(pretty=True) + EnvType + os.environ.get('DESKTOP_SESSION') + " | Shell: " + os.environ['SHELL'].split("/")[-1]
+
 print("")
 FetchCanvas.DrawCanvas()
-print(Style.RESET_ALL + " | OS: " + distro.name() + " " + distro.version() + " | DE: " + os.environ.get('DESKTOP_SESSION'))
+print(Style.RESET_ALL + PCInfo + " |")
 print("")

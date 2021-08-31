@@ -1,5 +1,5 @@
  {
      "Icon": "auto",
      "Distro": "auto",
-     "WindowEnvironment": false
+     "UsesWindowManager": false
  }

@@ -14,14 +14,18 @@ class Canvas:
 		for y in self.ScreenData:
 			print("".join(y))
 
-	def DrawString(self, text, x, y):
+	def DrawString(self, text, x, y, c=""):
 		currentY = y
 		currentX = x
+		color = c
 
 		currentchar = 0
 		while currentchar < len(text):
 			if not text[currentchar] == "\n":
-				self.ScreenData[currentY][currentX] = text[currentchar]
+				if text[currentchar] == chr(32):
+					self.ScreenData[currentY][currentX] = text[currentchar]
+				else:
+					self.ScreenData[currentY][currentX] = color + text[currentchar]
 			else:
 				currentX = x-1
 				currentY = currentY + 1
