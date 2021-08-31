@@ -43,20 +43,20 @@ IconText = Icon.read()
 # --Drawing to Canvas--
 
 # Icon
-FetchCanvas.DrawString(IconText, 1, 0, Fore.RED)
+FetchCanvas.DrawString(IconText, 1, 0, Fore.RED + Style.NORMAL)
 
 # Chat Box
-FetchCanvas.ScreenData[0][18] = Fore.WHITE + "▗"
-FetchCanvas.ScreenData[7][18] = Fore.WHITE + "▝"
+FetchCanvas.ScreenData[0][18] = Fore.WHITE + Style.BRIGHT + "▗"
+FetchCanvas.ScreenData[7][18] = Fore.WHITE + Style.BRIGHT + "▝"
 for i in range(1, 7):
-    FetchCanvas.ScreenData[i][18] = Fore.WHITE + "▐"
-    FetchCanvas.ScreenData[i][63] = Fore.WHITE + "▌"
-FetchCanvas.ScreenData[0][63] = Fore.WHITE + "▖"
-FetchCanvas.ScreenData[7][63] = Fore.WHITE + "▘"
+    FetchCanvas.ScreenData[i][18] = Fore.WHITE + Style.BRIGHT + "▐"
+    FetchCanvas.ScreenData[i][63] = Fore.WHITE + Style.BRIGHT + "▌"
+FetchCanvas.ScreenData[0][63] = Fore.WHITE + Style.BRIGHT + "▖"
+FetchCanvas.ScreenData[7][63] = Fore.WHITE + Style.BRIGHT + "▘"
 
 for i in range(19, 63):
-    FetchCanvas.ScreenData[0][i] = Fore.WHITE + "▄"
-    FetchCanvas.ScreenData[7][i] = Fore.WHITE + "▀"
+    FetchCanvas.ScreenData[0][i] = Fore.WHITE + Style.BRIGHT + "▄"
+    FetchCanvas.ScreenData[7][i] = Fore.WHITE + Style.BRIGHT + "▀"
 
 # Presenting Information
 PCInfo = " | OS: " + distro.name(pretty=True) + EnvType + os.environ.get('DESKTOP_SESSION') + " | Shell: " + os.environ['SHELL'].split("/")[-1]
