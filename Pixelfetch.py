@@ -27,7 +27,7 @@ else:
     ComputerDistro = "Unknown"
     OSColor = Fore.MAGENTA
 
-Icon = open(os.path.dirname(__file__) + "/Characters/" + ComputerDistro + ".txt", "r")
+Icon = open(os.path.dirname(__file__) + "/Icons/" + ComputerDistro + ".txt", "r")
 IconText = OSColor + Icon.read()
 
 # Drawing to Canvas
