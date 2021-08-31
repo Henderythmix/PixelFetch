@@ -20,7 +20,7 @@ You make your configurations in `config.json`. When configuring, make sure you d
  - **Color** *auto* - The color that shows up if you want a custom color instead (leave auto to make it decide on its own) *does not work yet*
  - **UsesWindowManager** *false* - Set this to true if you use a window manager instead of a desktop environment
 
-### Custom Icons
+## Custom Icons
 Want to make your own icons? here are the characters you can use:
 
 **Icons should be 16x8 characters. they can be smaller, but they can not be taller or wider or THEY WILL crash**
@@ -38,3 +38,7 @@ Lesser Corners - ▖▗ ▘▝
 
 Shading I guess?:
 Checkered - ▚ ▞
+
+## Custom Quotes
+
+Just create a text file in the Quotes folder, and type whatever you want in it as long as it is 61x6 Characters
