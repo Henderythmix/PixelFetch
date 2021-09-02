@@ -46,4 +46,5 @@ Just create a text file in the Quotes folder, and type whatever you want in it a
 
 ## To-DO
 * [ ] Work with config file
+* [ ] Get if in WM or DM
 * [ ] Adding more distros logos
