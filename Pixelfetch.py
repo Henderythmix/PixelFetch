@@ -1,16 +1,21 @@
-# Program by DigitDorian
-# Contributors can be found on https://github.com/DigitDorian/PixelFetch
 import os, platform, json, random
 
-import distro
-
-from colorama import init
-from colorama import Fore, Back, Style
-init()
+try:
+    import distro
+except:
+    print("pip3 install distro")
+    exit(1)
+try:
+    from colorama import init, Fore, Back, Style
+except:
+    print("pip3 install colorama")
+    exit(1)
 
 import ASCIICanvas
 
-# -- INITIALIZATION --
+
+## Initialization ##
+init()
 
 # Static Variables
 FetchCanvas = ASCIICanvas.Canvas(80, 9)
