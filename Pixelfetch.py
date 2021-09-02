@@ -1,9 +1,8 @@
-# Programmed by DigitDorian
-import os
-import platform
+# Program by DigitDorian
+# Contributors can be found on https://github.com/DigitDorian/PixelFetch
+import os, platform, json, random
+
 import distro
-import json
-import random
 
 from colorama import init
 from colorama import Fore, Back, Style
@@ -43,9 +42,10 @@ if ComputerDistro == "debian":
     OSColor = Fore.RED
 elif ComputerDistro == "linuxmint":
     OSColor = Fore.GREEN
+elif ComputerDistro == "arch":
+    OSColor = Fore.CYAN
 else:
     ComputerDistro = "Unknown"
-    OSColor = Fore.MAGENTA
 
 Icon = open(os.path.dirname(__file__) + "/Icons/" + ComputerDistro + ".txt", "r")
 IconText = Icon.read()
@@ -53,7 +53,7 @@ IconText = Icon.read()
 # -- DRAWING TO CANVAS --
 
 # Icon
-FetchCanvas.DrawString(IconText, 1, 0, Fore.RED + Style.NORMAL)
+FetchCanvas.DrawString(IconText, 1, 0, OSColor + Style.NORMAL)
 
 # Chat Box
 FetchCanvas.ScreenData[0][18] = Fore.WHITE + Style.BRIGHT + "▛"
