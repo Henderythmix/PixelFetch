@@ -10,6 +10,8 @@ The distro icons are also intended to have a pixel art unicode style isntead of 
 
 because this is programmed in python, if you want to add this to your rc file, you will have to run
 `python3 *insert full directory*/Pixelfetch.py` and the rest should run properly on its own.
+If you can not run it because you are missing modules, make sure you pip installed
+distro and colorama
 
 ## Configuration
 
