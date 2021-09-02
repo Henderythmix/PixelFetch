@@ -1,33 +1,55 @@
 # Programmed by DigitDorian
-import os
-import platform
-import distro
-import json
-import random
+import os, platform, json, random
 
-from colorama import init
-from colorama import Fore, Back, Style
-init()
+try:
+    import distro
+except:
+    print("pip3 install distro")
+    exit(1)
+try:
+    from colorama import init, Fore, Back, Style
+except:
+    print("pip3 install colorama")
+    exit(1)
 
 import ASCIICanvas
 
-# -- INITIALIZATION --
+
+## Initialization ##
+init()
 
 # Static Variables
-FetchCanvas = ASCIICanvas.Canvas(80, 9)
-FetchCanvas.Initialize()
+Canvas = ASCIICanvas.Canvas(80, 9)
+Canvas.Initialize()
+ExePath = os.path.dirname(__file__) 
+QuotesPath = os.path.join(ExePath, "Quotes")
+IconsPath = os.path.join(ExePath, "Icons")
+ConfigPath = os.path.join(ExePath, "config.json")
 
-files = []
 
-for (dirpath, dirnames, filenames) in os.walk(os.path.dirname(__file__) + "/Quotes"):
-	files.extend(filenames)
+Quotes = os.listdir(QuotesPath)
+with open(os.path.join(QuotesPath, random.choice(Quotes)), 'r') as QuoteFile:
+    Quote = QuoteFile.read()
 
-Quote = open(os.path.dirname(__file__) + "/Quotes/" + files[random.randint(-1, len(files) - 1)], "r")
 
-ConfigFile = open(os.path.dirname(__file__) + "/config.json", "r")
-Config = json.loads(ConfigFile.read())
+## Read Config File ##
+try:
+    with open(ConfigPath, 'r', encoding='utf8') as ConfigFile:
+        Config = json.load(ConfigFile)
+except FileNotFoundError:
+    raise FileNotFoundError("Could not found file \"config.json\"")
 
-# Is it a window manager?
+
+## Get Distro Icon ##
+try:
+    with open(os.path.join(IconsPath, distro.id()), 'r') as IconFile:
+        Icon = IconFile.read()
+except FileNotFoundError:
+    with open(os.path.join(IconsPath, "unknown"), 'r') as IconFile:
+        Icon = IconFile.read()
+ 
+
+## GUI ENV ##
 EnvType = ""
 
 if Config["UsesWindowManager"] == True:
@@ -35,46 +57,32 @@ if Config["UsesWindowManager"] == True:
 else:
     EnvType = " | DE: "
 
-# Picking the Icon
-ComputerDistro = distro.id()
-OSColor = Fore.WHITE
 
-if ComputerDistro == "debian":
-    OSColor = Fore.RED
-elif ComputerDistro == "linuxmint":
-    OSColor = Fore.GREEN
-else:
-    ComputerDistro = "Unknown"
-    OSColor = Fore.MAGENTA
-
-Icon = open(os.path.dirname(__file__) + "/Icons/" + ComputerDistro + ".txt", "r")
-IconText = Icon.read()
-
-# -- DRAWING TO CANVAS --
-
+## DRAWING TO CANVAS ##
 # Icon
-FetchCanvas.DrawString(IconText, 1, 0, Fore.RED + Style.NORMAL)
+Canvas.DrawString(Icon, 1, 0, Fore.RED + Style.NORMAL)
 
-# Chat Box
-FetchCanvas.ScreenData[0][18] = Fore.WHITE + Style.BRIGHT + "▛"
-FetchCanvas.ScreenData[7][18] = Fore.WHITE + Style.BRIGHT + "▙"
+# Text Box
+Canvas.ScreenData[0][18] = Fore.WHITE + Style.BRIGHT + "▛"
+Canvas.ScreenData[7][18] = Fore.WHITE + Style.BRIGHT + "▙"
 for i in range(1, 7):
-    FetchCanvas.ScreenData[i][18] = Fore.WHITE + Style.BRIGHT + "▌"
-    FetchCanvas.ScreenData[i][79] = Fore.WHITE + Style.BRIGHT + "▐"
-FetchCanvas.ScreenData[0][79] = Fore.WHITE + Style.BRIGHT + "▜"
-FetchCanvas.ScreenData[7][79] = Fore.WHITE + Style.BRIGHT + "▟"
+    Canvas.ScreenData[i][18] = Fore.WHITE + Style.BRIGHT + "▌"
+    Canvas.ScreenData[i][79] = Fore.WHITE + Style.BRIGHT + "▐"
+Canvas.ScreenData[0][79] = Fore.WHITE + Style.BRIGHT + "▜"
+Canvas.ScreenData[7][79] = Fore.WHITE + Style.BRIGHT + "▟"
 
 for i in range(19, 79):
-    FetchCanvas.ScreenData[0][i] = Fore.WHITE + Style.BRIGHT + "▀"
-    FetchCanvas.ScreenData[7][i] = Fore.WHITE + Style.BRIGHT + "▄"
+    Canvas.ScreenData[0][i] = Fore.WHITE + Style.BRIGHT + "▀"
+    Canvas.ScreenData[7][i] = Fore.WHITE + Style.BRIGHT + "▄"
 
 # Quote
-FetchCanvas.DrawString(Quote.read(), 19, 1, Fore.GREEN)
+Canvas.DrawString(Quote, 19, 1, Fore.GREEN)
 
-# -- PRESENTATION --
-PCInfo = " | OS: " + distro.name(pretty=True) + EnvType + os.environ.get('DESKTOP_SESSION') + " | Shell: " + os.environ['SHELL'].split("/")[-1]
+
+## PRESENTATION ##
+PCInfo = " | OS: " + distro.name(pretty=True) +  " | Shell: " + os.environ['SHELL'].split("/")[-1]
 
 print("")
-FetchCanvas.DrawCanvas()
+Canvas.DrawCanvas()
 print(Style.RESET_ALL + PCInfo + " |")
 print("")
