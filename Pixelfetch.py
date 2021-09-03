@@ -7,15 +7,12 @@ except:
     exit(1)
 try:
     from colorama import init, Fore, Back, Style
+    init() # this function belongs to the colorama module so I'm putting it here
 except:
     print("pip3 install colorama")
     exit(1)
 
 import ASCIICanvas
-
-
-# -- INITIALIZATION --
-init()
 
 # Static Variables
 FetchCanvas = ASCIICanvas.Canvas(80, 9)
@@ -25,22 +22,20 @@ QuotesPath = os.path.join(ExePath, "Quotes")
 IconsPath = os.path.join(ExePath, "Icons")
 ConfigPath = os.path.join(ExePath, "config.json")
 
-
-# -- QUOTES -- 
+# -- File Reading --
+# Quotes
 Quotes = os.listdir(QuotesPath)
 with open(os.path.join(QuotesPath, random.choice(Quotes)), 'r') as QuoteFile:
     Quote = QuoteFile.read()
 
-
-# -- CNFIG FILE --
+# Config File
 try:
     with open(ConfigPath, 'r', encoding='utf8') as ConfigFile:
         Config = json.load(ConfigFile)
 except FileNotFoundError:
     raise FileNotFoundError("Could not found file \"config.json\"")
 
-
-# -- ICON ---
+# Icon
 try:
     with open(os.path.join(IconsPath, f"{distro.id()}.txt"), 'r') as IconFile:
         Icon = IconFile.read()
@@ -49,15 +44,14 @@ try:
                 "debian": Fore.RED,
                 "linuxmint": Fore.GREEN
         }
-        OsColor = KnownDis[distro.id()]
+        OSColor = KnownDis[distro.id()]
 except FileNotFoundError:
     with open(os.path.join(IconsPath, "unknown.txt"), 'r') as IconFile:
         Icon = IconFile.read()
+        OSColor = Fore.WHITE
 
-
-# -- PC INFO --
-# Is it a window manager?
-EnvType = " | WM: " if Config["UsesWindowManager"] == True else " | DE: "
+# Other PC Info
+EnvType = " | WM: " if Config["UsesWindowManager"] == True else "| DE:"
 
 Shell = os.getenv("SHELL").split('/')[-1] # Get the name of the shell
 OsFullName = distro.name(pretty=True)     # Get the full name of the distro
@@ -65,7 +59,7 @@ OsFullName = distro.name(pretty=True)     # Get the full name of the distro
 # -- DRAWING TO CANVAS --
 
 # Icon
-FetchCanvas.DrawString(Icon, 1, 0, OsColor + Style.NORMAL)
+FetchCanvas.DrawString(Icon, 1, 0, OSColor + Style.NORMAL)
 
 # Chat Box
 FetchCanvas.ScreenData[0][18] = Fore.WHITE + Style.BRIGHT + "▛"
@@ -86,5 +80,6 @@ FetchCanvas.DrawString(Quote, 19, 1, Fore.GREEN)
 # -- PRESENTATION --
 print("")
 FetchCanvas.DrawCanvas()
-print(f"{Style.RESET_ALL} OS: {OsFullName} | Shell: {Shell}")
+print(f"{Style.RESET_ALL} OS: {OsFullName} {EnvType} {os.environ.get('DESKTOP_SESSION')} | Shell: {Shell}")
+# I know he got rid of the DE but I'm still doing that as the owner of the project for now. We can find a variable alternative when we do.
 print("")
