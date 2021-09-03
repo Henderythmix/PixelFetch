@@ -1,59 +1,71 @@
-# Program by DigitDorian
-# Contributors can be found on https://github.com/DigitDorian/PixelFetch
 import os, platform, json, random
 
-import distro
-
-from colorama import init
-from colorama import Fore, Back, Style
-init()
+try:
+    import distro
+except:
+    print("pip3 install distro")
+    exit(1)
+try:
+    from colorama import init, Fore, Back, Style
+except:
+    print("pip3 install colorama")
+    exit(1)
 
 import ASCIICanvas
 
+
 # -- INITIALIZATION --
+init()
 
 # Static Variables
 FetchCanvas = ASCIICanvas.Canvas(80, 9)
 FetchCanvas.Initialize()
+ExePath = os.path.dirname(__file__)
+QuotesPath = os.path.join(ExePath, "Quotes")
+IconsPath = os.path.join(ExePath, "Icons")
+ConfigPath = os.path.join(ExePath, "config.json")
 
-files = []
 
-for (dirpath, dirnames, filenames) in os.walk(os.path.dirname(__file__) + "/Quotes"):
-	files.extend(filenames)
+# -- QUOTES -- 
+Quotes = os.listdir(QuotesPath)
+with open(os.path.join(QuotesPath, random.choice(Quotes)), 'r') as QuoteFile:
+    Quote = QuoteFile.read()
 
-Quote = open(os.path.dirname(__file__) + "/Quotes/" + files[random.randint(-1, len(files) - 1)], "r")
 
-ConfigFile = open(os.path.dirname(__file__) + "/config.json", "r")
-Config = json.loads(ConfigFile.read())
+# -- CNFIG FILE --
+try:
+    with open(ConfigPath, 'r', encoding='utf8') as ConfigFile:
+        Config = json.load(ConfigFile)
+except FileNotFoundError:
+    raise FileNotFoundError("Could not found file \"config.json\"")
 
+
+# -- ICON ---
+try:
+    with open(os.path.join(IconsPath, f"{distro.id()}.txt"), 'r') as IconFile:
+        Icon = IconFile.read()
+        KnownDis = {
+                "arch": Fore.LIGHTCYAN_EX,
+                "debian": Fore.RED,
+                "linuxmint": Fore.GREEN
+        }
+        OsColor = KnownDis[distro.id()]
+except FileNotFoundError:
+    with open(os.path.join(IconsPath, "unknown.txt"), 'r') as IconFile:
+        Icon = IconFile.read()
+
+
+# -- PC INFO --
 # Is it a window manager?
-EnvType = ""
+EnvType = " | WM: " if Config["UsesWindowManager"] == True else " | DE: "
 
-if Config["UsesWindowManager"] == True:
-    EnvType = " | WM: "
-else:
-    EnvType = " | DE: "
-
-# Picking the Icon
-ComputerDistro = distro.id()
-OSColor = Fore.WHITE
-
-if ComputerDistro == "debian":
-    OSColor = Fore.RED
-elif ComputerDistro == "linuxmint":
-    OSColor = Fore.GREEN
-elif ComputerDistro == "arch":
-    OSColor = Fore.CYAN
-else:
-    ComputerDistro = "Unknown"
-
-Icon = open(os.path.dirname(__file__) + "/Icons/" + ComputerDistro + ".txt", "r")
-IconText = Icon.read()
+Shell = os.getenv("SHELL").split('/')[-1] # Get the name of the shell
+OsFullName = distro.name(pretty=True)     # Get the full name of the distro
 
 # -- DRAWING TO CANVAS --
 
 # Icon
-FetchCanvas.DrawString(IconText, 1, 0, OSColor + Style.NORMAL)
+FetchCanvas.DrawString(Icon, 1, 0, OsColor + Style.NORMAL)
 
 # Chat Box
 FetchCanvas.ScreenData[0][18] = Fore.WHITE + Style.BRIGHT + "▛"
@@ -69,12 +81,10 @@ for i in range(19, 79):
     FetchCanvas.ScreenData[7][i] = Fore.WHITE + Style.BRIGHT + "▄"
 
 # Quote
-FetchCanvas.DrawString(Quote.read(), 19, 1, Fore.GREEN)
+FetchCanvas.DrawString(Quote, 19, 1, Fore.GREEN)
 
 # -- PRESENTATION --
-PCInfo = " | OS: " + distro.name(pretty=True) + EnvType + os.environ.get('DESKTOP_SESSION') + " | Shell: " + os.environ['SHELL'].split("/")[-1]
-
 print("")
 FetchCanvas.DrawCanvas()
-print(Style.RESET_ALL + PCInfo + " |")
+print(f"{Style.RESET_ALL} OS: {OsFullName} | Shell: {Shell}")
 print("")
