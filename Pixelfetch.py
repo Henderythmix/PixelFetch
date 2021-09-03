@@ -42,7 +42,8 @@ try:
         KnownDis = {
                 "arch": Fore.LIGHTCYAN_EX,
                 "debian": Fore.RED,
-                "linuxmint": Fore.GREEN
+                "linuxmint": Fore.GREEN,
+                "ubuntu": Fore.YELLOW
         }
         OSColor = KnownDis[distro.id()]
 except FileNotFoundError:
