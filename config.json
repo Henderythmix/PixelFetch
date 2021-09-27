@@ -2,6 +2,6 @@
     "Distro": "auto",
     "Icon": "auto",
     "Color": "auto",
-    "Shell": "Basic",
+    "Shell": "Gradient",
     "UsesWindowManager": false
  }

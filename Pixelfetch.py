@@ -89,5 +89,5 @@ print(f"{Style.RESET_ALL} OS: {OsFullName} {EnvType} {os.environ.get('DESKTOP_SE
 print("")
 
 # Color Pallete - All the work for this is in colorpalletes.py
-colorpalletes.DrawPallete(Config["Shell"], 5)
+colorpalletes.DrawPallete(Config["Shell"], 3)
 print("")
