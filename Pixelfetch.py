@@ -13,6 +13,7 @@ except:
     exit(1)
 
 import ASCIICanvas
+import colorpalletes
 
 # Static Variables
 FetchCanvas = ASCIICanvas.Canvas(80, 9)
@@ -79,8 +80,14 @@ for i in range(19, 79):
 FetchCanvas.DrawString(Quote, 19, 1, Fore.GREEN)
 
 # -- PRESENTATION --
+
+# Fetch Data
 print("")
 FetchCanvas.DrawCanvas()
 print(f"{Style.RESET_ALL} OS: {OsFullName} {EnvType} {os.environ.get('DESKTOP_SESSION')} | Shell: {Shell}")
 # I know he got rid of the DE but I'm still doing that as the owner of the project for now. We can find a variable alternative when we do.
+print("")
+
+# Color Pallete - All the work for this is in colorpalletes.py
+colorpalletes.DrawPallete(Config["Shell"], 5)
 print("")
